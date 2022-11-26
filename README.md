@@ -1,6 +1,9 @@
 # ECE356-Project
 
 ### Step to load data
+
+The dataset can be found on Kaggle
+
 1. run `./server/createReviews.sql`
 2. run `./server/createRecipe.sql`
 3. run `./server/createUser.sql`
@@ -36,8 +39,3 @@ def ConnectDatabase():
 1. Change login information for the database using [Login information for database in this documentation](# Login information for database)
 2. Navigate to `./client` folder
 3. run `python3 welcome.py`
-
-### Video
-We find that the video is large and it needed to be downloaded for viewing
-
-We have two formats for the video, .mov and .mp4, you can choose one of them

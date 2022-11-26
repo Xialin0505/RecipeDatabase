@@ -1,0 +1,205 @@
+Prerequisite:
+
+Edit the database login info in utility.py
+
+welcome page:
+#1 testing invalid user ID (the userID is not in the database):
+input:  No
+        666666
+expected output: Invalid user id, please try again
+result: pass
+
+#2 testing valid user ID (the userID that is in the database):
+input:  No
+        2002372756
+expected output: print out the action menu
+result: pass
+
+#3 testing user registration:
+input:  Yes
+        test
+        test
+expected output: print out the newly created userID
+result: pass
+
+#4 try login using the newly created user:
+input: Newly created user id
+expected output: print out the action menu
+result: pass
+
+#5 Log out from the application:
+input: Choose to log out when all actions are done
+expected output: 
+        You are going to log out
+        Bye.
+        Application is terminated
+        The user's last interation time is updated
+result: pass
+
+recipe creation:
+#1 testing create recipe:
+input: follow the step of the recipe creation
+expected output: Recipe is successfully created
+result: pass
+
+#2 try no enter step when creating recipe:
+input: when going through recipe creation, type 'finish' when entering the first step
+expected output: You must input instructions
+result: pass
+
+#3 try enter a technique that is not in the provided 58 technique:
+input: when going through recipe creationg, type 'Hello' when entering the technique
+expected output: Invalid technique, please enter another one
+result: pass
+
+#4 try enter a ingredient that is not in the database:
+input: when going through recipe creation, type 'Hello' when entering the ingredient
+expected output: Invalid ingredient, choose another one
+result: pass
+
+#5 try not enter ingredient:
+input: when going through recipe creating, tyoe 'finish' when entering the first ingredient
+expected output: You must input ingredient
+result: pass
+
+#6 create a recipe without tag:
+input: when going through recipe creation, type finish when enterig the first tag
+expected output: no error, this action is allowed
+result: pass
+
+#7 create a valid recipe:
+input: going through the recipe creation 
+expected output: 
+        no error, this recipe is added to the database and thus the later search can see this recipe
+        when the user is veiwing his recipe, this recipe will be displayed
+        when using search recipe, the reipe can be found
+        when using search recipe by id, the recipe information is correctly display
+        All relevant recipe information is created
+result: pass
+
+
+recipe deletion:
+#1 delete a recipe that is not in the database
+input: enter a invalid recipe (recipe is not in the database)
+expected output: This recipe does not exist and all its relevant information is deleted
+result: pass
+
+#2 delete a recipe that is not created by user
+input: enter a recipe that is created by someone else
+expected output: You can only delete your own recipe
+result: pass
+
+#3 delete a recipe with valid recipe id
+input: enter a recipe that is valid and is created by the user
+expected output: 
+        Recipe [RecipeID] is successfully deleted 
+        The recipe is no longer in the database and the search cannot find the recipe
+result: pass
+
+recipe modification: 
+#1 modify the recipe name/steps/tags/ingredient/desciption
+input: enter the new value following the instrctions
+expected output: 
+        Recipe [RecipeID] is modified
+        The new information is current for the recipe
+result: pass
+
+search recipe:
+#1 search the recipe using the filter:
+intput: enter the filter with the given format
+expected output: 
+        The recipe is found and display with its summarize information
+        The filtered recipe is indeed matching the filter
+result: pass
+
+view my recipe:
+#1 view the recipe that is newly created
+input: 
+        View the recipe when the user has not create any recipe
+        Create a recipe
+        View the recipe again
+expected output:
+        The first view does not show any recipe
+        The new view print out the summarize infomation for the new recipe
+result: pass
+
+#2 view the recipe that is deleted
+input:
+        Delete the recipe
+        View the recipe
+expected output:
+        The deleted recipe is not present
+result: pass
+
+Create a review:
+#1 Create a review by not entering rating:
+input: when creating the review, try no entering the rating
+expected output: You must have a rating
+result: pass
+
+#2 Create a review by not entering comments:
+input: when creating the review, try no entering the comments
+expected output: 
+        The review is successfully created
+        The recipe summary has the new overall rating
+        The review will be print when the detail information of recipe is query by user
+result: pass
+
+Delete a review:
+#1 Delete a review that is not present:
+input: enter a recipe ID that the user has no review for the recipe
+expected output: You do not have a review for this recipe
+result: pass
+
+#2 Delete the review:
+input: enter a valid recipe that has the review created by user
+expected output: 
+        Your review is deleted
+        The recipe is not longer a recipe with review if there is not review on thie recipe
+        The review will not present when user view his review
+        The review will not present when the recipe's information is shown
+        The recipe's overall rate is updated with the new rating
+        The author's overall rate is updated with the new rating
+        The review number of the recipe is updated
+result: pass
+
+Modify a review:
+#1 Modify the comments:
+input: enter a new comments for the recipe
+expected output: 
+        Your review is modified
+        The review's comment is updated
+        The overall rating for recipe and author is correct
+result: pass
+
+#2 Modify the rating:
+input: Enter the new rating for the recipe
+expected output:
+        Your review is modified
+        The review's rating is updated
+        The recipe's overall rating is updated
+        The author's overall rating is updated
+result: pass
+
+View my reviews:
+#1 View my reviews when there is no review:
+input: Author does not have a review yet and want to print my reviews
+expected output: You don't have review yet
+result: pass
+
+#2 View my review after creating a review:
+input: Create a new review and want to print my reviews
+expected output: The new review is presented
+result: pass
+
+#3 View my review after delete a review:
+input: Delete a review and want to print my reviews
+expected output: The deleted review is not presented
+result: pass
+
+#4 View my review when modify a review:
+input: Modify a review
+expected output: The review's new information presented 
+result: pass
+
+

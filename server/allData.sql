@@ -1,0 +1,10 @@
+source /home/x596liu/ECE356/project/ece356-project/server/createReviews.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/createRecipe.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/createUser.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/createRecipeReview.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/createAuthor.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/createInstructions.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/createIngredient.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/createTags.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/index.sql;
+source /home/x596liu/ECE356/project/ece356-project/server/cleanUp.sql;

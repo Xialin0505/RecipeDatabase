@@ -1,0 +1,288 @@
+Recipe:
+
+#1
+purpose: ensure the RecipeName cannot be NULL for Recipe table
+input: INSERT INTO Recipe (RecipeName, RecipeID) VALUES (NULL, 666666)
+exppected output: ERROR 1048 (23000): Column 'RecipeName' cannot be null
+result: pass
+
+#2
+purpose: ensure the RecipeID cannot be NULL for Recipe table
+input: INSERT INTO Recipe (RecipeName, RecipeID) VALUES ('test', NULL)
+exppected output: ERROR 1048 (23000): Column 'RecipeID' cannot be null
+result: pass
+
+#3
+purpose: to test if we can add a new valid recipe into Recipe table
+input: INSERT INTO Recipe VALUES (666666,'egg',1,'des',1,1,1,1,1,1,1,'[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]')
+expected output: Query OK, 1 row affected (0.00 sec)
+result: pass
+
+#4
+purpose: ensure Recipe tbale cannot have entries with duplicated RecipeID
+input: INSERT INTO Recipe VALUES (666666,'egg',1,'des',1,1,1,1,1,1,1,'[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]')
+exppected output: ERROR 1062 (23000): Duplicate entry '666666' for key 'recipe.PRIMARY'
+result: pass
+
+#5
+purpose: ensure the RecipeID is larger than zero
+input: INSERT INTO Recipe VALUES (-1232,'egg',1,'des',1,1,1,1,1,1,1,'[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]')
+expected output: ERROR 3819 (HY000): Check constraint 'recipe_chk_1' is violated.
+result: pass
+
+Tags:
+
+#1
+purpose: check for foreign key constraint on RecipeID
+input: INSERT INTO Tags VALUES (666667, 1, 'test')
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`tags`, CONSTRAINT `tags_ibfk_1` FOREIGN KEY (`RecipeID`) REFERENCES `recipe` (`RecipeID`) ON DELETE CASCADE)
+result: pass
+
+#2
+purpose: check for primary key constraint on RecipeID
+input: INSERT INTO Tags VALUES (666666, 1, 'test')
+       INSERT INTO Tags VALUES (666666, 1, 'test')
+expected output:Query OK, 1 row affected (0.01 sec)
+                ERROR 1062 (23000): Duplicate entry '666666-1' for key 'tags.PRIMARY'
+result: pass
+
+Instructions:
+
+#1
+purpose: check for foreign key constraint on RecipeID
+input: INSERT INTO Instructions VALUES (666667, 1, 'test')
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`instructions`, CONSTRAINT `instructions_ibfk_1` FOREIGN KEY (`RecipeID`) REFERENCES `recipe` (`RecipeID`) ON DELETE CASCADE)
+result: pass
+
+#2
+purpose: check for primary key constraint on RecipeID
+input: INSERT INTO Instructions VALUES (666666, 1, 'test')
+       INSERT INTO Instructions VALUES (666666, 1, 'test')
+expected output: Query OK, 1 row affected (0.00 sec)
+                 ERROR 1062 (23000): Duplicate entry '666666-1' for key 'instructions.PRIMARY'
+result: pass
+
+#3
+purpose: check for StepNumber larger than zero
+input: INSERT INTO Instructions VALUES (666666, 0, 'test')
+expected output: ERROR 3819 (HY000): Check constraint 'instructions_chk_1' is violated.
+result: pass
+
+Ingredients:
+
+#1
+purpose: check for primary key constraint on IngredientID
+input: INSERT INTO Ingredients VALUES (4308, 'test')
+expected output: ERROR 1062 (23000): Duplicate entry '4308' for key 'ingredients.PRIMARY'
+result: pass
+
+#2
+purpose: check for primary key cannot be NULL
+input: INSERT INTO Ingredients VALUES (NULL, 'test')
+expected output: ERROR 1048 (23000): Column 'IngredientID' cannot be null
+result: pass
+
+#3
+purpose: check for unique Name constraint
+input: INSERT INTO Ingredients VALUES (666666, 'lettuce')
+expected output: ERROR 1062 (23000): Duplicate entry 'lettuce' for key 'ingredients.Name'
+result: pass
+
+#4
+purpose: check for Name cannot be NULL
+input: INSERT INTO Ingredients VALUES (666666, NULL)
+expected output: ERROR 1048 (23000): Column 'Name' cannot be null
+result: pass
+
+RecipeIngredient:
+
+#1
+purpose: check for foreign key constraint on RecipeID
+input: INSERT INTO RecipeIngredient VALUES (666667, 4308)
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`recipeingredient`, CONSTRAINT `recipeingredient_ibfk_2` FOREIGN KEY (`RecipeID`) REFERENCES `recipe` (`RecipeID`) ON DELETE CASCADE)
+result: pass
+
+#2
+purpose: check for foreign key constraint on IngredientID
+input: INSERT INTO RecipeIngredient VALUES (666666, 66666)
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`recipeingredient`, CONSTRAINT `recipeingredient_ibfk_1` FOREIGN KEY (`IngredientID`) REFERENCES `ingredients` (`IngredientID`) ON DELETE CASCADE)
+result: pass
+
+#3
+purpose: check for duplicated primary key
+input: INSERT INTO RecipeIngredient VALUES (666666, 4308)
+       INSERT INTO RecipeIngredient VALUES (666666, 4308)
+expected output: Query OK, 1 row affected (0.00 sec)
+                 ERROR 1062 (23000): Duplicate entry '666666-4308' for key 'recipeingredient.PRIMARY'
+result: pass
+
+
+Users:
+
+#1
+purpose: check for UserID cannot be NULL
+input: INSERT INTO Users (Constraints, UserID) VALUES (1, NULL)
+expected output: ERROR 1048 (23000): Column 'UserID' cannot be null
+result: pass
+
+#2
+purpose: check for Constraints cannot be NULL
+input: INSERT INTO Users (Constraints, UserID) VALUES (NULL, 666666)
+expected output: ERROR 1048 (23000): Column 'Constraints' cannot be null
+result: pass
+
+#3
+purpose: ensure Constraints cannot be value other than 1 or 0 
+input: INSERT INTO Users (UserID, Constraints) VALUES (666666, 5)
+expected output: ERROR 3819 (HY000): Check constraint 'users_chk_4' is violated.
+result: pass
+
+#4
+purpose: check for UserID must be larger than zero
+input: INSERT INTO Users (UserID, Constraints) VALUES (0, 1)
+expected output: ERROR 3819 (HY000): Check constraint 'users_chk_3' is violated.
+result: pass
+
+#5
+purpose: check for UserID cannot be duplicated
+input: INSERT INTO Users (UserID, Constraints) VALUES (666666, 1)
+       INSERT INTO Users (UserID, Constraints) VALUES (666666, 1)
+expected output: Query OK, 1 row affected (0.01 sec)
+                 ERROR 1062 (23000): Duplicate entry '666666' for key 'users.PRIMARY'
+result: pass
+
+
+RecipeMeta:
+
+#1
+purpose: check for foreign key constraint on RecipeID
+input: INSERT INTO RecipeMeta (RecipeID, Author) VALUES (666667, 4308)
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`recipemeta`, CONSTRAINT `recipemeta_ibfk_2` FOREIGN KEY (`RecipeID`) REFERENCES `recipe` (`RecipeID`) ON DELETE CASCADE)
+result: pass
+
+#2
+purpose: check for foreign key constraint on Author
+input: INSERT INTO RecipeMeta (RecipeID, Author) VALUES (666666, 666667)
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`recipemeta`, CONSTRAINT `recipemeta_ibfk_1` FOREIGN KEY (`Author`) REFERENCES `users` (`UserID`))
+result: pass
+
+#3
+purpose: check for NumStep must be larger than zero
+input: INSERT INTO RecipeMeta (RecipeID, Author, NumStep) VALUES (666666, 1537, 0)
+expected output: ERROR 3819 (HY000): Check constraint 'recipemeta_chk_1' is violated.
+result: pass
+
+#4
+purpose: check for NumIngredient must be larger than zero
+input: INSERT INTO RecipeMeta (RecipeID, Author, NumIngredient) VALUES (666666, 1537, 0)
+expected output: ERROR 3819 (HY000): Check constraint 'recipemeta_chk_2' is violated.
+result: pass
+
+Author:
+
+#1
+purpose: check for foreign key constraint on UserID
+input: INSERT INTO Author (UserID) VALUES (666667)
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`author`, CONSTRAINT `author_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE)
+result: pass
+
+#2
+purpose: check for RecipeNum must be larger than zero
+input: UPDATE Author SET RecipeNum=0 WHERE UserID=1533
+expected output: ERROR 3819 (HY000): Check constraint 'author_chk_1' is violated.
+result: pass
+
+#3
+purpose: check for OverallRate must be larger or equal to zero
+input: UPDATE Author SET OverallRate=-1 WHERE UserID=1533
+expected output: ERROR 3819 (HY000): Check constraint 'author_chk_2' is violated.
+result: pass
+
+RecipeWithReview:
+
+#1
+purpose: check for foreign key constraint on RecipeID
+input: INSERT INTO RecipeWithReview (RecipeID) VALUES (666667)
+expected output: ERROR 3819 (HY000): Check constraint 'recipewithreview_chk_8' is violated.
+result: pass
+
+#2
+purpose: check for RateCount5 must be larger or equal to zero
+input: INSERT INTO RecipeWithReview (RecipeID, RateCount5) VALUES (666666, -1)
+expected output: ERROR 3819 (HY000): Check constraint 'recipewithreview_chk_1' is violated.
+result: pass
+
+#3
+purpose: check for OverallRate falls into the range from zero to five
+input: INSERT INTO RecipeWithReview (RecipeID, OverallRate) VALUES (666666, 7)
+expected output: ERROR 3819 (HY000): Check constraint 'recipewithreview_chk_7' is violated.
+result: pass
+
+#4
+purpose: check for ReviewNum must be larger than zero
+input: INSERT INTO RecipeWithReview (RecipeID, ReviewNum) VALUES (666666, 0)
+expected output: ERROR 3819 (HY000): Check constraint 'recipewithreview_chk_8' is violated.
+result: pass
+
+Reviews:
+
+#1
+purpose: check for foreign key constraint on RecipeID
+input: INSERT INTO Reviews (RecipeID, UserID, Rating) VALUES (666667, 1537, 1)
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`reviews`, CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`RecipeID`) REFERENCES `recipewithreview` (`RecipeID`) ON DELETE CASCADE)
+result: pass
+
+#2
+purpose: check for foreign key constraint on UserID
+input: INSERT INTO Reviews (RecipeID, UserID, Rating) VALUES (666666, 666666, 1)
+expected output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`356prj`.`reviews`, CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`RecipeID`) REFERENCES `recipewithreview` (`RecipeID`) ON DELETE CASCADE)
+result: pass
+
+#3
+purpose: check for Rating cannot be NULL
+input: INSERT INTO Reviews (RecipeID, UserID, Rating) VALUES (89, 1938, NULL)
+expected output: ERROR 1048 (23000): Column 'Rating' cannot be null
+result: pass
+
+#4
+purpose: check for primary cannot be duplicated
+input: INSERT INTO Reviews (RecipeID, UserID, Rating) VALUES (38, 1938, 1)
+       INSERT INTO Reviews (RecipeID, UserID, Rating) VALUES (38, 1938, 1)
+expected output: Query OK, 1 row affected (0.00 sec)
+                 ERROR 1062 (23000): Duplicate entry '38-1938' for key 'reviews.PRIMARY'
+result: pass
+
+#5
+purpose: check for Rating falls into the range from zero to five
+input: INSERT INTO Reviews (RecipeID, UserID, Rating) VALUES (666666, 1537, 7)
+expected output: ERROR 3819 (HY000): Check constraint 'reviews_chk_1' is violated.
+result: pass
+
+
+Test ON DELETE CASCADE:
+#1
+purposr: check if all the relevant data of a recipe is deleted when the recipe is deleted
+input: DELETE FROM Recipe WHERE RecipeID=49;
+       SELECT * FROM RecipeWithReview WHERE RecipeID=49;
+       SELECT * FROM Reviews WHERE RecipeID=49;
+       SELECT * FROM Instructions WHERE RecipeID=49;
+       SELECT * FROM RecipeIngredient WHERE RecipeID=49;
+       SELECT * FROM Tags WHERE RecipeID=49;
+expected output: Query OK, 1 row affected (0.01 sec)
+                 Empty set (0.00 sec)
+                 Empty set (0.00 sec)
+                 Empty set (0.00 sec)
+                 Empty set (0.00 sec)
+                 Empty set (0.00 sec)
+result: pass
+
+#2
+purpose: check if the user is deleted, it will also be removed from Author table
+input: DELETE FROM Users WHERE UserID=666666
+       SELECT * FROM Author WHERE UserID=666666 
+expected output: Query OK, 1 row affected (0.00 sec)
+                 Empty set (0.00 sec)
+result: pass
+
+
+
